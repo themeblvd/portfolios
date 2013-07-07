@@ -64,7 +64,7 @@ class Theme_Blvd_Portfolios {
      */
     private function __construct() {
 
-    	// Setup CPT
+    	// Setup CPT & taxonomies
     	add_action( 'init', array( $this, 'register' ) );
     	add_action( 'admin_enqueue_scripts', array( $this, 'menu_icon' ) );
 
@@ -84,7 +84,7 @@ class Theme_Blvd_Portfolios {
      public function register() {
 
      	// Add Portfolio Item custom post type
-		$labels = apply_filters( 'themeblvd_portfolios_cpt_labels', array(
+		$labels = apply_filters( 'themeblvd_portfolio_item_cpt_labels', array(
 			'name' 					=> __( 'Portfolios', 'themeblvd_portfolios' ),
 			'singular_name'			=> __( 'Portfolio Item', 'themeblvd_portfolios' ),
 			'add_new'				=> __( 'Add New Item', 'themeblvd_portfolios' ),
@@ -99,14 +99,14 @@ class Theme_Blvd_Portfolios {
 			'menu_name'				=> __( 'Portfolios' )
 		));
 
-		$args = apply_filters( 'themeblvd_portfolios_cpt_args', array(
+		$args = apply_filters( 'themeblvd_portfolio_item_cpt_args', array(
 			'labels'				=> $labels,
 			'public'				=> true,
 			'publicly_queryable'	=> true,
 			'show_ui'				=> true,
 			'show_in_menu'			=> true,
 			'query_var'				=> true,
-			'rewrite'				=> array( 'slug' => 'portfolio-item' ),
+			'rewrite'				=> array( 'slug' => 'item' ),
 			'capability_type'		=> 'post',
 			'has_archive'			=> true,
 			'hierarchical'			=> false,
@@ -116,10 +116,10 @@ class Theme_Blvd_Portfolios {
 			'taxonomies'			=> array( 'tb_portfolio', 'post_tag' )
 		));
 
-  		register_post_type( 'tb_portfolio_item', $args );
+  		register_post_type( 'portfolio_item', $args );
 
   		// Add "Portfolio" taxonomy (i.e. Items are grouped into portfolios)
-		$labels = apply_filters( 'themeblvd_portfolios_tax_labels', array(
+		$labels = apply_filters( 'themeblvd_portfolio_tax_labels', array(
 			'name'              => __( 'Portfolios', 'themeblvd_portfolios' ),
 			'singular_name'     => __( 'Portfolio', 'themeblvd_portfolios' ),
 			'search_items'      => __( 'Search Portfolios', 'themeblvd_portfolios' ),
@@ -133,20 +133,44 @@ class Theme_Blvd_Portfolios {
 			'menu_name'         => __( 'Portfolios', 'themeblvd_portfolios' )
 		));
 
-		$args = apply_filters( 'themeblvd_portfolios_tax_args', array(
+		$args = apply_filters( 'themeblvd_portfolio_tag_tax_args', array(
 			'hierarchical'      => true,
 			'labels'            => $labels,
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
-			'rewrite'           => array( 'slug' => 'genre' ),
+			'rewrite'           => array( 'slug' => 'portfolio' ),
 		));
 
-		register_taxonomy( 'tb_portfolio', array( 'tb_portfolio_item' ), $args );
+		register_taxonomy( 'portfolio', array( 'portfolio_item' ), $args );
+
+        // Add "Portfolio Tag" taxonomy
+        $labels = apply_filters( 'themeblvd_portfolio_tag_tax_labels', array(
+            'name'              => __( 'Portfolio Tags', 'themeblvd_portfolios' ),
+            'singular_name'     => __( 'Portfolio Tag', 'themeblvd_portfolios' ),
+            'search_items'      => __( 'Search Portfolio Tags', 'themeblvd_portfolios' ),
+            'all_items'         => __( 'All Portfolio Tags', 'themeblvd_portfolios' ),
+            'edit_item'         => __( 'Edit Portfolio Tag', 'themeblvd_portfolios' ),
+            'update_item'       => __( 'Update Portfolio Tag', 'themeblvd_portfolios' ),
+            'add_new_item'      => __( 'Add New Portfolio Tag', 'themeblvd_portfolios' ),
+            'new_item_name'     => __( 'New Portfolio Tag Name', 'themeblvd_portfolios' ),
+            'menu_name'         => __( 'Portfolio Tags', 'themeblvd_portfolios' )
+        ));
+
+        $args = apply_filters( 'themeblvd_portfolio_tag_tax_args', array(
+            'hierarchical'      => false,
+            'labels'            => $labels,
+            'show_ui'           => true,
+            'show_admin_column' => true,
+            'query_var'         => true,
+            'rewrite'           => array( 'slug' => 'portfolio-tag' ),
+        ));
+
+        register_taxonomy( 'portfolio_tag', array( 'portfolio_item' ), $args );
 
 		// Better safe than sorry
-		register_taxonomy_for_object_type( 'post_tag', 'tb_portfolio_item' );
-		register_taxonomy_for_object_type( 'tb_portfolio', 'tb_portfolio_item' );
+		register_taxonomy_for_object_type( 'tb_portfolio_tag', 'portfolio_item' );
+		register_taxonomy_for_object_type( 'tb_portfolio', 'portfolio_item' );
 
      }
 
