@@ -5,7 +5,7 @@ Tags: bundle, Theme Blvd, themeblvd, Jason Bobich, portfolios
 Stable Tag: 1.0.0
 Tested up to: 3.6
 
-Extend the Post Grid system in your Theme Blvd theme to a Portfolio custom post type.
+Extend the Post Grid system in your Theme Blvd theme to a Portfolio Item custom post type.
 
 == Description ==
 
@@ -20,7 +20,7 @@ Extend the Post Grid system in your Theme Blvd theme to a Portfolio custom post 
 
 = Will this plugin work if I'm not using a Theme Blvd theme? =
 
-Yup, bu it just won't do a whole lot. You'll essentially end up with a "Portfolio" custom post type and associated taxonomies.
+Yup, but it just won't do a whole lot. You'll essentially end up with a "Portfolio Item" custom post type and associated "Portfolio" taxonomy with a cool retina icon.
 
 == Changelog ==
 
