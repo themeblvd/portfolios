@@ -1,12 +1,12 @@
-.menu-icon-tb_portfolio_item .wp-menu-image {
+.menu-icon-portfolio_item .wp-menu-image {
 	background: url(../images/menu-icon.png) 7px 6px no-repeat;
 	text-indent: -9999px;
 }
-.menu-icon-tb_portfolio_item:hover .wp-menu-image,
-.menu-icon-tb_portfolio_item.wp-has-current-submenu .wp-menu-image {
-	background-position: 7px -26px;
+.menu-icon-portfolio_item:hover .wp-menu-image,
+.menu-icon-portfolio_item.wp-has-current-submenu .wp-menu-image {
+	background-position: 7px -25px;
 }
-#icon-edit.icon32-posts-tb_portfolio_item {
+#icon-edit.icon32-posts-portfolio_item {
 	background: url(../images/edit-icon.png) no-repeat;
 }
 @media 	only screen and (-webkit-min-device-pixel-ratio: 1.5),
@@ -14,12 +14,12 @@
 		only screen and (-o-min-device-pixel-ratio: 1.5),
 		only screen and (min-device-pixel-ratio: 1.5),
 		only screen and (min-resolution: 1.5dppx) {
-	.menu-icon-tb_portfolio_item .wp-menu-image {
+	.menu-icon-portfolio_item .wp-menu-image {
 		background: url(../images/menu-icon_2x.png) 7px 6px no-repeat;
-		background-size: 16px 45px;
+		background-size: 17px 45px;
 	}
-	#icon-edit.icon32-posts-tb_portfolio_item {
+	#icon-edit.icon32-posts-portfolio_item {
 		background: url(../images/edit-icon_2x.png) no-repeat;
-		background-size: 32px 32px;
+		background-size: 36px 33px;
 	}
 }
