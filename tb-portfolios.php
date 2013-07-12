@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Theme Blvd Portfolios
+Plugin Name: Portfolios
 Description: Extend the Post Grid system in your Theme Blvd theme to a Portfolio custom post type.
 Version: 1.0.0
 Author: Theme Blvd

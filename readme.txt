@@ -1,4 +1,4 @@
-=== Theme Blvd Portfolios ===
+=== Portfolios ===
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: bundle, Theme Blvd, themeblvd, Jason Bobich, portfolios
