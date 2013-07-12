@@ -68,24 +68,41 @@ class Theme_Blvd_Portfolios {
     	add_action( 'init', array( $this, 'register' ) );
     	add_action( 'admin_enqueue_scripts', array( $this, 'menu_icon' ) );
 
-    	// Add elements to Layout Builder plugin
-    	// ...
+        // Theme Blvd integration
+        add_filter( 'themeblvd_core_elements', array( $this, 'builder_options' ) );
+        add_filter( 'themeblvd_posts_args', array( $this, 'query_args' ), 9, 2 );
+        add_filter( 'themeblvd_post_slider_args', array( $this, 'query_args' ), 9, 2 );
+        add_filter( 'themeblvd_slider_auto_args', array( $this, 'query_args' ), 9, 2 );
 
-    	// Add shortcodes [portfolio_grid]
-    	// ...
+        add_filter( 'themeblvd_template_list_query', array( $this, 'page_template_query' ), 10, 3 );
+        add_filter( 'themeblvd_template_grid_query', array( $this, 'page_template_query' ), 10, 3 );
+
+        add_filter( 'themeblvd_post_meta', array( $this, 'post_meta' ) );
+        add_filter( 'themeblvd_meta_options_tb_post_options', array( $this, 'post_meta_options' ) );
+        add_filter( 'themeblvd_pto_options', array( $this, 'pto_options' ) );
+
+        add_filter( 'themeblvd_meta', array( $this, 'meta' ), 10, 6 );
+        add_filter( 'themeblvd_pre_breadcrumb_parts', array( $this, 'breadcrumbs' ), 10, 2 );
+        add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
+        add_filter( 'themeblvd_template_parts', array( $this, 'template_parts' ) );
+
 
     }
+
+    /*--------------------------------------------*/
+    /* Setup the post type and taxonomies
+    /*--------------------------------------------*/
 
     /**
      * Register post type
      *
      * @since 1.0.0
      */
-     public function register() {
+    public function register() {
 
-     	// Add Portfolio Item custom post type
-		$labels = apply_filters( 'themeblvd_portfolio_item_cpt_labels', array(
-			'name' 					=> __( 'Portfolios', 'themeblvd_portfolios' ),
+        // Add Portfolio Item custom post type
+        $labels = apply_filters( 'themeblvd_portfolio_item_cpt_labels', array(
+			'name' 					=> __( 'Portfolio Items', 'themeblvd_portfolios' ),
 			'singular_name'			=> __( 'Portfolio Item', 'themeblvd_portfolios' ),
 			'add_new'				=> __( 'Add New Item', 'themeblvd_portfolios' ),
 			'add_new_item'			=> __( 'Add New Portfolio Item', 'themeblvd_portfolios' ),
@@ -113,7 +130,7 @@ class Theme_Blvd_Portfolios {
 			'menu_icon'				=> TB_PORTFOLIOS_PLUGIN_URI . '/assets/images/menu-icon.png',
 			'menu_position'			=> null,
 			'supports'				=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
-			'taxonomies'			=> array( 'tb_portfolio', 'post_tag' )
+			'taxonomies'			=> array( 'tb_portfolio', 'tb_portfolio_tag' )
 		));
 
   		register_post_type( 'portfolio_item', $args );
@@ -139,7 +156,7 @@ class Theme_Blvd_Portfolios {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
-			'rewrite'           => array( 'slug' => 'portfolio' ),
+			'rewrite'           => array( 'slug' => 'items' ),
 		));
 
 		register_taxonomy( 'portfolio', array( 'portfolio_item' ), $args );
@@ -163,14 +180,14 @@ class Theme_Blvd_Portfolios {
             'show_ui'           => true,
             'show_admin_column' => true,
             'query_var'         => true,
-            'rewrite'           => array( 'slug' => 'portfolio-tag' ),
+            'rewrite'           => array( 'slug' => 'item-tag' ),
         ));
 
         register_taxonomy( 'portfolio_tag', array( 'portfolio_item' ), $args );
 
 		// Better safe than sorry
-		register_taxonomy_for_object_type( 'tb_portfolio_tag', 'portfolio_item' );
-		register_taxonomy_for_object_type( 'tb_portfolio', 'portfolio_item' );
+		register_taxonomy_for_object_type( 'portfolio_tag', 'portfolio_item' );
+		register_taxonomy_for_object_type( 'portfolio', 'portfolio_item' );
 
      }
 
@@ -179,11 +196,461 @@ class Theme_Blvd_Portfolios {
      *
      * @since 1.0.0
      */
-     public function menu_icon() {
-     	wp_enqueue_style( 'themeblvd_portfolios_icon', TB_PORTFOLIOS_PLUGIN_URI . '/assets/css/icons.css' );
-     }
+    public function menu_icon() {
+        wp_enqueue_style( 'themeblvd_portfolios_icon', TB_PORTFOLIOS_PLUGIN_URI . '/assets/css/icons.css' );
+    }
 
-     // And more Theme Blvd integration stuff to come ...
+    /*--------------------------------------------*/
+    /* Theme Blvd Layout Builder Integration
+    /*--------------------------------------------*/
+
+    /**
+     * Modify options for posts lists and grids in
+     * the Theme Blvd Layout Builder.
+     *
+     * @since 1.0.0
+     */
+    public function builder_options( $elements ) {
+
+        // The keys for the elements that we're modifying
+        // the options for.
+        $items = $this->get_builder_items();
+
+        // Loop through the items we're going to modify
+        // and edit them within the overall $elements array.
+        foreach ( $items as $item ) {
+
+            $options = $elements[$item]['options'];
+
+            // Add additional sources the user can pull
+            // posts from.
+            $options['source']['options'] = $this->set_sorce( $options['source']['options'] );
+
+            // Set triggers on other options so they
+            // appear when the user selects the source.
+            $options = $this->set_triggers( $options );
+
+            // Add options
+            $options = $this->set_options( $options );
+
+            // Finalize and put back options
+            $elements[$item]['options'] = $options;
+
+        }
+
+        return $elements;
+    }
+
+    /**
+     * Take the selections for the source of a Builder
+     * elements and add in the Portfolios sources.
+     *
+     * @since 1.0.0
+     */
+    public function get_builder_items() {
+         $items = array(
+            'post_grid_paginated',
+            'post_grid_slider',
+            'post_grid',
+            'post_list_paginated',
+            'post_list_slider',
+            'post_list',
+            'post_slider'
+        );
+        return apply_filters( 'themeblvd_portfolios_builder_items', $items );
+    }
+
+    /**
+     * Take the selections for the source of a Builder
+     * elements and add in the Portfolios sources.
+     *
+     * @since 1.0.0
+     */
+    public function set_sorce( $selections ) {
+
+        $new_selections = array();
+
+        foreach ( $selections as $key => $value ) {
+
+            $new_selections[$key] = $value;
+
+            if( $key == 'tag' ) {
+                $new_selections['portfolio'] = __('Portfolio', 'themeblvd_portfolios');
+                $new_selections['portfolio-tag'] = __('Portfolio Tag', 'themeblvd_portfolios');
+            }
+
+        }
+
+        return $new_selections;
+    }
+
+    /**
+     * Take the selections for the source of a Builder
+     * elements and add in the Portfolios sources.
+     *
+     * @since 1.0.0
+     */
+    public function set_triggers( $options ) {
+
+        foreach ( $options as $key => $option ) {
+
+            if( ! isset( $option['class'] ) )
+                continue;
+
+            if( strpos( $option['class'], 'receiver-category receiver-tag' ) === false )
+                continue;
+
+            $options[$key]['class'] .= ' receiver-portfolio receiver-portfolio-tag';
+
+        }
+
+        return $options;
+    }
+
+    /**
+     * Add options to select portfolios and insert
+     * portfolio tag.
+     *
+     * @since 1.0.0
+     */
+    public function set_options( $options ) {
+
+        $new_options = array();
+
+        foreach ( $options as $key => $option ) {
+
+            $new_options[$key] = $option;
+
+            // Insert new options after the "Tag" option
+            if ( $key == 'tag' ) {
+
+                // Add option to select portfolios
+                $new_options['portfolio'] = array(
+                    'id'        => 'portfolio',
+                    'name'      => __( 'Portfolio', 'themeblvd_portfolios' ),
+                    'desc'      => __( 'Enter a portfolio slug, or a comma separated list of portfolio slugs, to pull posts from. Leave blank to pull all portfolio items.', 'themeblvd_portfolios' ),
+                    'type'      => 'text',
+                    'class'     => 'hide receiver receiver-portfolio'
+                );
+
+                // Add option to input portfolio tag
+                $new_options['portfolio_tag'] = array(
+                    'id'        => 'portfolio_tag',
+                    'name'      => __( 'Portfolio Tag', 'themeblvd_portfolios' ),
+                    'desc'      => __( 'Enter a single portfolio tag, or a comma separated list of portfolio tags, to pull posts from.', 'themeblvd_portfolios' ),
+                    'type'      => 'text',
+                    'class'     => 'hide receiver receiver-portfolio-tag'
+                );
+
+            }
+
+        }
+
+        return $new_options;
+
+    }
+
+    /*--------------------------------------------*/
+    /* Theme Blvd "Post Options" Integration
+    /*--------------------------------------------*/
+
+    /**
+     * Add "Post Options" to Portfolio Item custom
+     * post type.
+     *
+     * @since 1.0.0
+     */
+    public function post_meta( $setup ) {
+        $setup['config']['page'][] = 'portfolio_item';
+        return $setup;
+    }
+
+    /**
+     * Adjustments to options in "Post Options" meta box.
+     *
+     * @since 1.0.0
+     */
+    public function post_meta_options( $options ) {
+
+        // Meta data hidden by default on single posts
+        $options['tb_meta']['std'] = 'hide';
+
+        return $options;
+
+    }
+
+    /**
+     * Adjustments to options in Theme Blvd "Post Template
+     * Options" plugin.
+     *
+     * @since 1.0.0
+     */
+    public function pto_options( $options ) {
+
+        $new_options = array();
+
+        foreach ( $options as $key => $option ) {
+
+            $new_options[$key] = $option;
+
+            // Add our custom options after tag
+            if ( $key == 'tag' ) {
+
+                $new_options['portfolio'] = array(
+                    'id'        => 'portfolio',
+                    'name'      => __( 'portfolio', 'themeblvd_pto' ),
+                    'desc'      => __( 'Portfolio slugs to include.<br>Ex: my-portfolio<br>Ex: my-portfolio-1, my-portfolio-2', 'themeblvd_pto' ),
+                    'type'      => 'text'
+                );
+
+                $new_options['portfolio_tag'] = array(
+                    'id'        => 'portfolio_tag',
+                    'name'      => __( 'portfolio_tag', 'themeblvd_pto' ),
+                    'desc'      => __( 'Portfolio tags to include.<br>Ex: my-tag<br>Ex: my-tag-1, my-tag-2', 'themeblvd_pto' ),
+                    'type'      => 'text'
+                );
+
+            }
+
+        }
+
+        return $new_options;
+
+    }
+
+    /*--------------------------------------------*/
+    /* Theme Blvd Query Modfications
+    /*--------------------------------------------*/
+
+    /**
+     * Allow "portfolio" and "portfolio_tag" custom
+     * fields with Post List and Post Grid page templates.
+     *
+     * @since 1.0.0
+     */
+    public function page_template_query( $query, $custom, $post_id ) {
+
+        if ( ! $custom ) {
+
+            $portfolio = get_post_meta( $post_id, 'portfolio', true );
+            $portfolio_tag = get_post_meta( $post_id, 'portfolio_tag', true );
+
+            if ( $portfolio || $portfolio_tag ) {
+
+                unset( $query['categories'], $query['cat'], $query['category_name'] );
+                unset( $query['tag'] );
+
+                $query['post_type'] = 'portfolio_item';
+
+                if ( $portfolio ) {
+
+                    $portfolio = str_replace(' ', '', $portfolio );
+                    $portfolio = explode( ',', $portfolio );
+
+                    $query['tax_query'][] = array(
+                        'taxonomy'  => 'portfolio',
+                        'field'     => 'slug',
+                        'terms'     => $portfolio
+                    );
+                }
+
+                if ( $portfolio_tag ) {
+
+                    $portfolio_tag = str_replace(' ', '', $portfolio_tag );
+                    $portfolio_tag = explode( ',', $portfolio_tag );
+
+                    $query['tax_query'][] = array(
+                        'taxonomy'  => 'portfolio_tag',
+                        'field'     => 'slug',
+                        'terms'     => $portfolio_tag
+                    );
+                }
+            }
+        }
+
+        return $query;
+
+    }
+
+    /**
+     * On the frontend of the site, filter the query
+     * args for post lists and post grids to include
+     * our portfolio options.
+     *
+     * @since 1.0.0
+     */
+    public function query_args( $query, $args ) {
+
+        $source = '';
+        if ( ! empty( $args['source'] ) )
+            $source = $args['source'];
+
+        if ( 'portfolio' == $source || 'portfolio-tag' == $source || ! $source ) {
+
+            $query['tax_query'] = array();
+
+            // Portfolios
+            if ( 'portfolio' == $source || ( ! $source && ! empty( $args['portfolio'] ) ) ) {
+
+                $query['post_type'] = 'portfolio_item';
+
+                $portfolios = str_replace(' ', '', $args['portfolio'] );
+                $portfolios = explode( ',', $portfolios );
+
+                $query['tax_query'][] = array(
+                    'taxonomy'  => 'portfolio',
+                    'field'     => 'slug',
+                    'terms'     => $portfolios
+                );
+
+                // Remove standard post taxomonies
+                unset( $query['categories'], $query['cat'], $query['category_name'] );
+                unset( $query['tag'] );
+            }
+
+            // Portfolio Tags
+            if ( 'portfolio-tag' == $source || ( ! $source && ! empty( $args['portfolio_tag'] ) ) ) {
+
+                $query['post_type'] = 'portfolio_item';
+
+                $tags = str_replace(' ', '', $args['portfolio_tag'] );
+                $tags = explode( ',', $tags );
+
+                $query['tax_query'][] = array(
+                    'taxonomy'  => 'portfolio_tag',
+                    'field'     => 'slug',
+                    'terms'     => $tags
+                );
+
+                // Remove standard post taxomonies
+                unset( $query['categories'], $query['cat'], $query['category_name'] );
+                unset( $query['tag'] );
+            }
+
+        }
+
+        return $query;
+    }
+
+    /*--------------------------------------------*/
+    /* Theme Blvd Frontend Integration
+    /*--------------------------------------------*/
+
+    /**
+     * Breadcrumbs
+     *
+     * @since 1.0.0
+     */
+    public function breadcrumbs( $parts, $atts ) {
+
+        global $wp_query;
+
+        // Single Portfolio Items
+        if ( is_single() && 'portfolio_item' == get_post_type() ) {
+
+            $parts = array(); // reset it
+
+            // Portfolio taxonomy tree
+            $portfolio = get_the_terms( get_the_id(), 'portfolio' );
+            $portfolio = reset( $portfolio );
+            $parents = themeblvd_get_term_parents( $portfolio->term_id, 'portfolio' );
+            $parts = array_merge( $parts, $parents );
+
+            // Single post title
+            $parts[] = array(
+                'link'  => '',
+                'text'  => get_the_title(),
+                'type'  => 'single'
+            );
+
+        }
+
+        // Portfolios
+        if ( is_tax( 'portfolio' ) ) {
+
+            // Parent portfolios
+            $portfolio_obj = $wp_query->get_queried_object();
+            $current_portfolio = $portfolio_obj->term_id;
+            $current_portfolio = get_term( $current_portfolio, 'portfolio' );
+
+            if ( $current_portfolio->parent && ( $current_portfolio->parent != $current_portfolio->term_id ) ) {
+                $parents = themeblvd_get_term_parents( $current_portfolio->parent, 'portfolio' );
+                $parts = array_merge( $parts, $parents );
+            }
+
+            // Add current portfolio
+            $parts[] = array(
+                'link'  => '',
+                'text'  => $current_portfolio->name,
+                'type'  => 'category'
+            );
+
+
+        }
+
+        // Portfolio Tags
+        if ( is_tax( 'portfolio_tag' ) ) {
+            $parts[] = array(
+                'link'  => '',
+                'text'  => single_term_title( '', false ),
+                'type'  => 'tag'
+            );
+        }
+
+        return $parts;
+    }
+
+    /**
+     * Tags
+     *
+     * @since 1.0.0
+     */
+    public function tags( $tags, $before, $sep, $after ) {
+
+        if ( 'portfolio_item' == get_post_type() )
+            $tags = get_the_term_list( get_the_id(), 'portfolio_tag', $before, $sep, $after );
+
+        return $tags;
+    }
+
+    /**
+     * Post Meta
+     *
+     * @since 1.0.0
+     */
+    public function meta( $output, $time, $author, $category, $comments, $sep ) {
+
+        if ( 'portfolio_item' == get_post_type() ) {
+
+            $portfolio = get_the_term_list( get_the_id(), 'portfolio', '<span class="category"><i class="icon-reorder"></i> ', ', ', '</span>' );
+
+            if ( $portfolio )
+                $portfolio = $sep.$portfolio;
+
+            $output = str_replace( $sep.$category, $portfolio, $output );
+
+        }
+
+        return $output;
+    }
+
+    /**
+     * Adjust the template part used for archives
+     * of portfolios and portfolio tags.
+     *
+     * @since 1.0.0
+     */
+    public function template_parts( $parts ) {
+
+        // Point theme to content-grid.php and
+        // trigger "grid" mode in framework 2.3+
+        if ( is_tax( 'portfolio' ) || is_tax( 'portfolio_tag' ) )
+            $parts['archive'] = 'grid';
+
+        return $parts;
+
+    }
+
 }
 
 /**
