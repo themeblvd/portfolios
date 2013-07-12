@@ -7,7 +7,7 @@
 	background-position: 7px -25px;
 }
 #icon-edit.icon32-posts-portfolio_item {
-	background: url(../images/edit-icon.png) no-repeat;
+	background: url(../images/edit-icon.png) 0 -2px no-repeat;
 }
 @media 	only screen and (-webkit-min-device-pixel-ratio: 1.5),
 		only screen and (-moz-min-device-pixel-ratio: 1.5),
@@ -19,7 +19,7 @@
 		background-size: 17px 45px;
 	}
 	#icon-edit.icon32-posts-portfolio_item {
-		background: url(../images/edit-icon_2x.png) no-repeat;
+		background-image: url(../images/edit-icon_2x.png);
 		background-size: 36px 33px;
 	}
 }
