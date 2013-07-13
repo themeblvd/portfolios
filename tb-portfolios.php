@@ -106,10 +106,10 @@ class Theme_Blvd_Portfolios {
 			'singular_name'			=> __( 'Portfolio Item', 'themeblvd_portfolios' ),
 			'add_new'				=> __( 'Add New Item', 'themeblvd_portfolios' ),
 			'add_new_item'			=> __( 'Add New Portfolio Item', 'themeblvd_portfolios' ),
-			'edit_item'				=> __( 'Edit Portfolio Item', 'themeblvd_portfolios' ),
+			'edit_item'				=> __( 'Edit Item', 'themeblvd_portfolios' ),
 			'new_item'				=> __( 'New Portfolio Item', 'themeblvd_portfolios' ),
 			'all_items'				=> __( 'Portfolio Items', 'themeblvd_portfolios' ),
-			'view_item'				=> __( 'View Portfolio Items', 'themeblvd_portfolios' ),
+			'view_item'				=> __( 'View Item', 'themeblvd_portfolios' ),
 			'search_items'			=> __( 'Search Portfolio Items', 'themeblvd_portfolios' ),
 			'not_found'				=> __( 'No portfolio items found', 'themeblvd_portfolios' ),
 			'not_found_in_trash'	=> __( 'No portfolio items found in Trash', 'themeblvd_portfolios' ),
@@ -220,11 +220,15 @@ class Theme_Blvd_Portfolios {
         // and edit them within the overall $elements array.
         foreach ( $items as $item ) {
 
+            if ( ! isset( $elements[$item]['options'] ) )
+                continue;
+
             $options = $elements[$item]['options'];
 
             // Add additional sources the user can pull
             // posts from.
-            $options['source']['options'] = $this->set_sorce( $options['source']['options'] );
+            if ( isset( $options['source']['options'] ) )
+                $options['source']['options'] = $this->set_sorce( $options['source']['options'] );
 
             // Set triggers on other options so they
             // appear when the user selects the source.
@@ -267,6 +271,9 @@ class Theme_Blvd_Portfolios {
      * @since 1.0.0
      */
     public function set_sorce( $selections ) {
+
+        if ( ! is_array( $selections ) || count( $selections ) < 0 )
+            return array();
 
         $new_selections = array();
 
