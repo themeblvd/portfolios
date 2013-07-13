@@ -30,7 +30,6 @@ If you're using a theme with [Theme Blvd](http://www.themeblvd.com) framework v2
 
 1. Upload `portfolios` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to Settings > Permalinks, and re-save your permalink settings.
 
 == Frequently Asked Questions ==
 

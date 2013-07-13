@@ -669,3 +669,20 @@ function themeblvd_portfolios_init() {
 	Theme_Blvd_Portfolios::get_instance();
 }
 add_action( 'plugins_loaded', 'themeblvd_portfolios_init' );
+
+/**
+ * Plugin activation
+ *
+ * @since 1.0.0
+ */
+function themeblvd_portfolios_activate() {
+
+    // Register CPT
+    $portfolios = Theme_Blvd_Portfolios::get_instance();
+    $portfolios->register();
+
+    // Flush re-write rules
+    flush_rewrite_rules();
+
+}
+register_activation_hook( __FILE__, 'themeblvd_portfolios_activate' );
