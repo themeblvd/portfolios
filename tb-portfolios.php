@@ -70,9 +70,12 @@ class Theme_Blvd_Portfolios {
 
         // Theme Blvd integration
         add_filter( 'themeblvd_core_elements', array( $this, 'builder_options' ) );
+        add_filter( 'themeblvd_portfolio_module_options', array( $this, 'portfolio_module_options' ) );
+
         add_filter( 'themeblvd_posts_args', array( $this, 'query_args' ), 9, 2 );
         add_filter( 'themeblvd_post_slider_args', array( $this, 'query_args' ), 9, 2 );
         add_filter( 'themeblvd_slider_auto_args', array( $this, 'query_args' ), 9, 2 );
+        add_filter( 'themeblvd_portfolio_module_args', array( $this, 'query_args' ), 9, 2 );
 
         add_filter( 'themeblvd_template_list_query', array( $this, 'page_template_query' ), 10, 3 );
         add_filter( 'themeblvd_template_grid_query', array( $this, 'page_template_query' ), 10, 3 );
@@ -243,6 +246,30 @@ class Theme_Blvd_Portfolios {
         }
 
         return $elements;
+    }
+
+    /**
+     * Add portfolio options to Portfolio Module,
+     * only exists in some themes, like Arcadian.
+     *
+     * @since 1.0.0
+     */
+    public function portfolio_module_options( $options ) {
+
+        // Add additional sources the user can pull
+        // posts from.
+        if ( isset( $options['source']['options'] ) )
+            $options['source']['options'] = $this->set_sorce( $options['source']['options'] );
+
+        // Set triggers on other options so they
+        // appear when the user selects the source.
+        $options = $this->set_triggers( $options );
+
+        // Add options
+        $options = $this->set_options( $options );
+
+        return $options;
+
     }
 
     /**
