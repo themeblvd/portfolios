@@ -17,13 +17,13 @@ Any instances of `the_tags()` by your theme when on a portfolio item post are fi
 
 If you're using a theme with [Theme Blvd](http://www.themeblvd.com) framework v2.3+, this plugin has some cool integration features.
 
-* Breadcrumb integration for Portfolio Items and assocated taxonomy archives.
+* Breadcrumb integration for Portfolio Items and associated taxonomy archives.
 * When meta information is displayed on a portfolio item post, the category is replaced with the portfolio.
 * Portfolio and Portfolio Tag WordPress archives automatically display posts in a grid format.
 * Post List and Post Grid page templates can accept "portfolio" and "portfolio_tag" custom fields to filter posts.
 * Standard "Post Options" meta box is integrated into the portfolio item custom post type.
 * With our [Layout Builder]() plugin, options to pull posts by Portfolio or Portfolio Tag are added to all Post List elements, Post Grid elements, and the Post Slider element.
-* With our [Shortcodes](http://wordpress.org/plugins/theme-blvd-shortcodes/) plugin, you can use "portfolio" and "portfolio_tag" parameters for `[post_list]`, `[post_grid]` shortcodes.
+* With our [Shortcodes](http://wordpress.org/plugins/theme-blvd-shortcodes/) plugin, you can use "portfolio" and "portfolio_tag" parameters for `[post_list]` and `[post_grid]` shortcodes.
 * With our [Sliders](http://wordpress.org/plugins/theme-blvd-sliders/) plugin, you can use "portfolio" and "portfolio_tag" parameters with `[post_slider]` shortcode.
 
 == Installation ==
