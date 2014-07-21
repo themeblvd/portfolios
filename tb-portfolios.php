@@ -594,9 +594,12 @@ class Theme_Blvd_Portfolios {
 
             // Portfolio taxonomy tree
             $portfolio = get_the_terms( get_the_id(), 'portfolio' );
-            $portfolio = reset( $portfolio );
-            $parents = themeblvd_get_term_parents( $portfolio->term_id, 'portfolio' );
-            $parts = array_merge( $parts, $parents );
+
+            if ( $portfolio ) {
+                $portfolio = reset( $portfolio );
+                $parents = themeblvd_get_term_parents( $portfolio->term_id, 'portfolio' );
+                $parts = array_merge( $parts, $parents );
+            }
 
             // Single post title
             $parts[] = array(
