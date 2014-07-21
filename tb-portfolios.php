@@ -223,15 +223,17 @@ class Theme_Blvd_Portfolios {
         // and edit them within the overall $elements array.
         foreach ( $items as $item ) {
 
-            if ( ! isset( $elements[$item]['options'] ) )
+            if ( ! isset( $elements[$item]['options'] ) ) {
                 continue;
+            }
 
             $options = $elements[$item]['options'];
 
             // Add additional sources the user can pull
             // posts from.
-            if ( isset( $options['source']['options'] ) )
+            if ( isset( $options['source']['options'] ) ) {
                 $options['source']['options'] = $this->set_sorce( $options['source']['options'] );
+            }
 
             // Set triggers on other options so they
             // appear when the user selects the source.
@@ -258,8 +260,9 @@ class Theme_Blvd_Portfolios {
 
         // Add additional sources the user can pull
         // posts from.
-        if ( isset( $options['source']['options'] ) )
+        if ( isset( $options['source']['options'] ) ) {
             $options['source']['options'] = $this->set_sorce( $options['source']['options'] );
+        }
 
         // Set triggers on other options so they
         // appear when the user selects the source.
@@ -299,8 +302,9 @@ class Theme_Blvd_Portfolios {
      */
     public function set_sorce( $selections ) {
 
-        if ( ! is_array( $selections ) || count( $selections ) < 0 )
+        if ( ! is_array( $selections ) || count( $selections ) < 0 ) {
             return array();
+        }
 
         $new_selections = array();
 
@@ -328,11 +332,13 @@ class Theme_Blvd_Portfolios {
 
         foreach ( $options as $key => $option ) {
 
-            if( ! isset( $option['class'] ) )
+            if( ! isset( $option['class'] ) ) {
                 continue;
+            }
 
-            if( strpos( $option['class'], 'receiver-category receiver-tag' ) === false )
+            if( strpos( $option['class'], 'receiver-category receiver-tag' ) === false ) {
                 continue;
+            }
 
             $options[$key]['class'] .= ' receiver-portfolio receiver-portfolio-tag';
 
@@ -516,8 +522,10 @@ class Theme_Blvd_Portfolios {
     public function query_args( $query, $args ) {
 
         $source = '';
-        if ( ! empty( $args['source'] ) )
+
+        if ( ! empty( $args['source'] ) ) {
             $source = $args['source'];
+        }
 
         if ( 'portfolio' == $source || 'portfolio-tag' == $source || ! $source ) {
 
@@ -641,8 +649,9 @@ class Theme_Blvd_Portfolios {
      */
     public function tags( $tags, $before, $sep, $after ) {
 
-        if ( 'portfolio_item' == get_post_type() )
+        if ( 'portfolio_item' == get_post_type() ) {
             $tags = get_the_term_list( get_the_id(), 'portfolio_tag', $before, $sep, $after );
+        }
 
         return $tags;
     }
@@ -658,8 +667,9 @@ class Theme_Blvd_Portfolios {
 
             $portfolio = get_the_term_list( get_the_id(), 'portfolio', '<span class="category"><i class="icon-reorder"></i> ', ', ', '</span>' );
 
-            if ( $portfolio )
+            if ( $portfolio ) {
                 $portfolio = $sep.$portfolio;
+            }
 
             $output = str_replace( $sep.$category, $portfolio, $output );
 
@@ -678,8 +688,9 @@ class Theme_Blvd_Portfolios {
 
         // Point theme to content-grid.php and
         // trigger "grid" mode in framework 2.3+
-        if ( is_tax( 'portfolio' ) || is_tax( 'portfolio_tag' ) )
+        if ( is_tax( 'portfolio' ) || is_tax( 'portfolio_tag' ) ) {
             $parts['archive'] = 'grid';
+        }
 
         return $parts;
 
