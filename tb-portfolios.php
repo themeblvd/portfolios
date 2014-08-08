@@ -84,11 +84,12 @@ class Theme_Blvd_Portfolios {
         add_filter( 'themeblvd_meta_options_tb_post_options', array( $this, 'post_meta_options' ) );
         add_filter( 'themeblvd_pto_options', array( $this, 'pto_options' ) );
 
-        add_filter( 'themeblvd_meta', array( $this, 'meta' ), 10, 6 );
+        // add_filter( 'themeblvd_locals', array( $this, 'locals' ) );
+        add_action( 'themeblvd_sub_meta_items', array( $this, 'sub_meta'), 11 ); // requires framework 2.5+
+        add_filter( 'themeblvd_meta', array( $this, 'meta' ), 10, 6 ); // @deprecated only for framework 2.4-
         add_filter( 'themeblvd_pre_breadcrumb_parts', array( $this, 'breadcrumbs' ), 10, 2 );
         add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
         add_filter( 'themeblvd_template_parts', array( $this, 'template_parts' ) );
-
 
     }
 
@@ -579,6 +580,16 @@ class Theme_Blvd_Portfolios {
     /*--------------------------------------------*/
 
     /**
+     * Frontend text strings
+     *
+     * @since 1.0.2
+     */
+    public function locals( $locals ) {
+        // ... @TODO Maybe do later if things get more complicated
+        return $locals;
+    }
+
+    /**
      * Breadcrumbs
      *
      * @since 1.0.0
@@ -660,13 +671,50 @@ class Theme_Blvd_Portfolios {
     }
 
     /**
+     * Sub post meta
+     *
+     * @since 1.0.1
+     */
+    public function sub_meta() {
+
+        $taxos = apply_filters( 'themeblvd_portfolios_sub_meta_taxos', array( 'portfolio', 'portfolio_tag' ) );
+
+        foreach ( $taxos as $tax ) {
+
+            $terms = get_the_terms( get_the_ID(), $tax );
+
+            if ( $terms ) {
+
+                $tax_obj = get_taxonomy($tax);
+
+                printf( '<div class="tb-%1$s %1$s">', $tax );
+                printf( '<span class="title">%s:</span>', $tax_obj->labels->name );
+
+                $count = count($terms);
+                $i = 1;
+
+                foreach ( $terms as $term ) {
+                    printf( '<a href="%1$s" title="%2$s">%2$s</a>', get_term_link( $term->term_id, $tax ), $term->name );
+                    if ( $i < $count ) {
+                        echo ', ';
+                    }
+                    $i++;
+                }
+
+                echo '</div>';
+            }
+        }
+
+    }
+
+    /**
      * Post Meta
      *
      * @since 1.0.0
      */
     public function meta( $output, $time, $author, $category, $comments, $sep ) {
 
-        if ( 'portfolio_item' == get_post_type() ) {
+        if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) && 'portfolio_item' == get_post_type() ) {
 
             $portfolio = get_the_term_list( get_the_id(), 'portfolio', '<span class="category"><i class="icon-reorder"></i> ', ', ', '</span>' );
 
