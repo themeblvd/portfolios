@@ -2,7 +2,7 @@
 /*
 Plugin Name: Portfolios
 Description: Extend the Post Grid system in your Theme Blvd theme to a Portfolio custom post type.
-Version: 1.0.2
+Version: 1.1.0
 Author: Theme Blvd
 Author URI: http://themeblvd.com
 License: GPL2
@@ -25,7 +25,7 @@ License: GPL2
 
 */
 
-define( 'TB_PORTFOLIOS_PLUGIN_VERSION', '1.0.2' );
+define( 'TB_PORTFOLIOS_PLUGIN_VERSION', '1.1.0' );
 define( 'TB_PORTFOLIOS_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'TB_PORTFOLIOS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 define( 'TB_PORTFOLIOS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -210,14 +210,19 @@ class Theme_Blvd_Portfolios {
         add_filter( 'themeblvd_meta_options_tb_post_options', array( $this, 'post_meta_options' ) );
         add_filter( 'themeblvd_pto_options', array( $this, 'pto_options' ) );
 
+        // ...
+        if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+            add_filter( 'themeblvd_formatted_options', array( $this, 'theme_options' ) );
+        }
+
         // add_filter( 'themeblvd_locals', array( $this, 'locals' ) );
         add_action( 'themeblvd_sub_meta_items', array( $this, 'sub_meta'), 11 ); // requires framework 2.5+
         add_filter( 'themeblvd_pre_breadcrumb_parts', array( $this, 'breadcrumbs' ), 10, 2 );
         add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
-        add_filter( 'themeblvd_template_parts', array( $this, 'template_parts' ) );
 
         // @deprecated
         if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
+            add_filter( 'themeblvd_template_parts', array( $this, 'template_parts' ) );
             add_filter( 'themeblvd_meta', array( $this, 'meta' ), 10, 6 );
         }
 
@@ -476,6 +481,65 @@ class Theme_Blvd_Portfolios {
 
         return $new_options;
 
+    }
+
+    /**
+     * Adjustments to Theme Options page. Add "Portfolio"
+     * section just after "Archives" section. Only applies
+     * to framework 2.5+ themes.
+     *
+     * @since 1.1.0
+     */
+    public function theme_options( $options ) {
+
+        $new_options = array();
+
+        foreach ( $options as $key => $option ) {
+
+            $new_options[$key] = $option;
+
+            if ( $key == 'end_section_archives' ) {
+
+                $new_options['section_start_portfolios'] = array(
+                    'name' => __('Portfolios', 'portfolios'),
+                    'type' => 'section_start'
+                );
+
+                $new_options['portfolio_mode'] = array(
+                    'name'      => __('Post Display', 'portfolios'),
+                    'desc'      => __('When viewing a portfolio or portfolio tag archive, how do you want them displayed by default?', 'portfolios'),
+                    'id'        => 'portfolio_mode',
+                    'std'       => 'showcase',
+                    'type'      => 'select',
+                    'options'   => array(
+                        'blog'      => __('Blog', 'portfolios'),
+                        'list'      => __('List', 'portfolios'),
+                        'grid'      => __('Grid', 'portfolios'),
+                        'showcase'  => __('Showcase', 'portfolios'),
+                    )
+                );
+
+                $new_options['portfolio_info'] = array(
+                    'name'      => __('Portfolio Info Boxes', 'portfolios'),
+                    'desc'      => __('When viewing a portfolio or portfolio tag archive, would you like to show an info box at the top that contains the title and description of the current portfolio?', 'portfolios'),
+                    'id'        => 'portfolio_info',
+                    'std'       => 'hide',
+                    'type'      => 'select',
+                    'options'   => array(
+                        'show' => __('Yes, show info boxes', 'portfolios'),
+                        'hide' => __('No, hide info boxes', 'portfolios')
+                    )
+                );
+
+                $new_options['section_end_portfolios'] = array(
+                    'type' => 'section_end'
+                );
+
+            }
+
+        }
+
+        return $new_options;
     }
 
     /*--------------------------------------------*/
