@@ -69,6 +69,8 @@ add_action( 'after_setup_theme', 'my_portfolio_mods' );
 
 = 1.0.2 =
 
+* Display portfolios below content of portfolio item posts (for framework 2.5+ themes)
+
 = 1.0.1 =
 
 * Fixed PHP warning on Portfolio Items breadcrumb trail when no portfolio is selected.

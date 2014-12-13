@@ -2,7 +2,7 @@
 /*
 Plugin Name: Portfolios
 Description: Extend the Post Grid system in your Theme Blvd theme to a Portfolio custom post type.
-Version: 1.0.1
+Version: 1.0.2
 Author: Theme Blvd
 Author URI: http://themeblvd.com
 License: GPL2
@@ -25,7 +25,7 @@ License: GPL2
 
 */
 
-define( 'TB_PORTFOLIOS_PLUGIN_VERSION', '1.0.1' );
+define( 'TB_PORTFOLIOS_PLUGIN_VERSION', '1.0.2' );
 define( 'TB_PORTFOLIOS_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'TB_PORTFOLIOS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 define( 'TB_PORTFOLIOS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -68,28 +68,8 @@ class Theme_Blvd_Portfolios {
     	add_action( 'init', array( $this, 'register' ) );
     	add_action( 'admin_enqueue_scripts', array( $this, 'menu_icon' ) );
 
-        // Theme Blvd integration
-        add_filter( 'themeblvd_core_elements', array( $this, 'builder_options' ) );
-        add_filter( 'themeblvd_portfolio_module_options', array( $this, 'portfolio_module_options' ) );
-
-        add_filter( 'themeblvd_posts_args', array( $this, 'query_args' ), 9, 2 );
-        add_filter( 'themeblvd_post_slider_args', array( $this, 'query_args' ), 9, 2 );
-        add_filter( 'themeblvd_slider_auto_args', array( $this, 'query_args' ), 9, 2 );
-        add_filter( 'themeblvd_portfolio_module_args', array( $this, 'query_args' ), 9, 2 );
-
-        add_filter( 'themeblvd_template_list_query', array( $this, 'page_template_query' ), 10, 3 );
-        add_filter( 'themeblvd_template_grid_query', array( $this, 'page_template_query' ), 10, 3 );
-
-        add_filter( 'themeblvd_post_meta', array( $this, 'post_meta' ) );
-        add_filter( 'themeblvd_meta_options_tb_post_options', array( $this, 'post_meta_options' ) );
-        add_filter( 'themeblvd_pto_options', array( $this, 'pto_options' ) );
-
-        // add_filter( 'themeblvd_locals', array( $this, 'locals' ) );
-        add_action( 'themeblvd_sub_meta_items', array( $this, 'sub_meta'), 11 ); // requires framework 2.5+
-        add_filter( 'themeblvd_meta', array( $this, 'meta' ), 10, 6 ); // @deprecated only for framework 2.4-
-        add_filter( 'themeblvd_pre_breadcrumb_parts', array( $this, 'breadcrumbs' ), 10, 2 );
-        add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
-        add_filter( 'themeblvd_template_parts', array( $this, 'template_parts' ) );
+        // Theme Blvd Integration
+        add_action( 'after_setup_theme', array( $this, 'themeblvd_init' ) );
 
     }
 
@@ -202,6 +182,45 @@ class Theme_Blvd_Portfolios {
      */
     public function menu_icon() {
         wp_enqueue_style( 'themeblvd_portfolios_icon', TB_PORTFOLIOS_PLUGIN_URI . '/assets/css/icons.css' );
+    }
+
+    /*--------------------------------------------*/
+    /* Initiate Theme Blvd integration
+    /*--------------------------------------------*/
+
+    /**
+     * Apply Theme Blvd specific actions and filters.
+     *
+     * @since 1.0.1
+     */
+    public function themeblvd_init() {
+
+        add_filter( 'themeblvd_core_elements', array( $this, 'builder_options' ) );
+        add_filter( 'themeblvd_portfolio_module_options', array( $this, 'portfolio_module_options' ) );
+
+        add_filter( 'themeblvd_posts_args', array( $this, 'query_args' ), 9, 2 );
+        add_filter( 'themeblvd_post_slider_args', array( $this, 'query_args' ), 9, 2 );
+        add_filter( 'themeblvd_slider_auto_args', array( $this, 'query_args' ), 9, 2 );
+        add_filter( 'themeblvd_portfolio_module_args', array( $this, 'query_args' ), 9, 2 );
+
+        add_filter( 'themeblvd_template_list_query', array( $this, 'page_template_query' ), 10, 3 );
+        add_filter( 'themeblvd_template_grid_query', array( $this, 'page_template_query' ), 10, 3 );
+
+        add_filter( 'themeblvd_post_meta', array( $this, 'post_meta' ) );
+        add_filter( 'themeblvd_meta_options_tb_post_options', array( $this, 'post_meta_options' ) );
+        add_filter( 'themeblvd_pto_options', array( $this, 'pto_options' ) );
+
+        // add_filter( 'themeblvd_locals', array( $this, 'locals' ) );
+        add_action( 'themeblvd_sub_meta_items', array( $this, 'sub_meta'), 11 ); // requires framework 2.5+
+        add_filter( 'themeblvd_pre_breadcrumb_parts', array( $this, 'breadcrumbs' ), 10, 2 );
+        add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
+        add_filter( 'themeblvd_template_parts', array( $this, 'template_parts' ) );
+
+        // @deprecated
+        if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
+            add_filter( 'themeblvd_meta', array( $this, 'meta' ), 10, 6 );
+        }
+
     }
 
     /*--------------------------------------------*/
@@ -714,7 +733,7 @@ class Theme_Blvd_Portfolios {
      */
     public function meta( $output, $time, $author, $category, $comments, $sep ) {
 
-        if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) && 'portfolio_item' == get_post_type() ) {
+        if ( 'portfolio_item' == get_post_type() ) {
 
             $portfolio = get_the_term_list( get_the_id(), 'portfolio', '<span class="category"><i class="icon-reorder"></i> ', ', ', '</span>' );
 
