@@ -69,7 +69,8 @@ add_action( 'after_setup_theme', 'my_portfolio_mods' );
 
 = 1.1.0 =
 
-* Display portfolios below content of portfolio item posts (for framework 2.5+ themes)
+* List associated portfolios at the bottom of the portfolio item post (for framework 2.5+ themes).
+* Added portfolio archive options at *Appearance > Theme Options > Content > Portfolios* (for framework 2.5+ themes).
 
 = 1.0.1 =
 

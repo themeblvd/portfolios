@@ -210,9 +210,10 @@ class Theme_Blvd_Portfolios {
         add_filter( 'themeblvd_meta_options_tb_post_options', array( $this, 'post_meta_options' ) );
         add_filter( 'themeblvd_pto_options', array( $this, 'pto_options' ) );
 
-        // ...
         if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
             add_filter( 'themeblvd_formatted_options', array( $this, 'theme_options' ) );
+            add_filter( 'themeblvd_theme_mode_override', array( $this, 'archive_mode' ), 10, 2 );
+            add_action( 'themeblvd_archive_info', array( $this, 'archive_info' ) );
         }
 
         // add_filter( 'themeblvd_locals', array( $this, 'locals' ) );
@@ -507,7 +508,7 @@ class Theme_Blvd_Portfolios {
 
                 $new_options['portfolio_mode'] = array(
                     'name'      => __('Post Display', 'portfolios'),
-                    'desc'      => __('When viewing a portfolio or portfolio tag archive, how do you want them displayed by default?', 'portfolios'),
+                    'desc'      => __('When viewing a portfolio or portfolio tag archive, how do you want the posts displayed?', 'portfolios'),
                     'id'        => 'portfolio_mode',
                     'std'       => 'showcase',
                     'type'      => 'select',
@@ -521,8 +522,20 @@ class Theme_Blvd_Portfolios {
 
                 $new_options['portfolio_info'] = array(
                     'name'      => __('Portfolio Info Boxes', 'portfolios'),
-                    'desc'      => __('When viewing a portfolio or portfolio tag archive, would you like to show an info box at the top that contains the title and description of the current portfolio?', 'portfolios'),
+                    'desc'      => __('When viewing a portfolio archive, would you like to show an info box at the top that contains the title and description of the current portfolio?', 'portfolios'),
                     'id'        => 'portfolio_info',
+                    'std'       => 'hide',
+                    'type'      => 'select',
+                    'options'   => array(
+                        'show' => __('Yes, show info boxes', 'portfolios'),
+                        'hide' => __('No, hide info boxes', 'portfolios')
+                    )
+                );
+
+                $new_options['portfolio_tag_info'] = array(
+                    'name'      => __('Portfolio Tag Info Boxes', 'portfolios'),
+                    'desc'      => __('When viewing a portfolio tag archive, would you like to show an info box at the top that contains the title and description of the current portfolio?', 'portfolios'),
+                    'id'        => 'portfolio_tag_info',
                     'std'       => 'hide',
                     'type'      => 'select',
                     'options'   => array(
@@ -540,6 +553,41 @@ class Theme_Blvd_Portfolios {
         }
 
         return $new_options;
+    }
+
+    /**
+     * Change post display mode for portfolio and portfolio
+     * tag archive pages, based on theme options additions.
+     *
+     * @since 1.1.0
+     */
+    public function archive_mode( $mode, $q ) {
+
+        if ( $q->is_tax('portfolio') || $q->is_tax('portfolio_tag') ) {
+
+            $mode = themeblvd_get_option('portfolio_mode', null, 'showcase');
+
+            if ( ! $mode || $mode == 'default' ) {
+                $mode = themeblvd_get_option( 'archive_mode', null, 'blog' );
+            }
+
+        }
+
+        return $mode;
+    }
+
+    /**
+     * Display info box at the top of portfolio and portfolio
+     * tag archive pages, based on theme options additions.
+     *
+     * @since 1.1.0
+     */
+    public function archive_info() {
+
+        if ( ( is_tax('portfolio') && themeblvd_get_option('portfolio_info') == 'show' ) || ( is_tax('portfolio_tag') && themeblvd_get_option('portfolio_tag_info') == 'show' ) ) {
+            themeblvd_tax_info();
+        }
+
     }
 
     /*--------------------------------------------*/
