@@ -208,7 +208,7 @@ class Theme_Blvd_Portfolios {
      */
     public function themeblvd_init() {
 
-        add_filter( 'themeblvd_core_elements', array( $this, 'builder_options' ) );
+        add_filter( 'themeblvd_elements', array( $this, 'builder_options' ) );
         add_filter( 'themeblvd_portfolio_module_options', array( $this, 'portfolio_module_options' ) );
 
         add_filter( 'themeblvd_posts_args', array( $this, 'query_args' ), 9, 2 );
@@ -223,7 +223,7 @@ class Theme_Blvd_Portfolios {
         add_filter( 'themeblvd_meta_options_tb_post_options', array( $this, 'post_meta_options' ) );
         add_filter( 'themeblvd_pto_options', array( $this, 'pto_options' ) );
 
-        if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+        if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) { // requires framework 2.5+
             add_filter( 'themeblvd_formatted_options', array( $this, 'theme_options' ) );
             add_filter( 'themeblvd_theme_mode_override', array( $this, 'archive_mode' ), 10, 2 );
             add_action( 'themeblvd_archive_info', array( $this, 'archive_info' ) );
@@ -322,13 +322,19 @@ class Theme_Blvd_Portfolios {
      */
     public function get_builder_items() {
          $items = array(
+            'mini_post_list',
+            'mini_post_grid',
+            'post_grid',
+            'post_list',
+            'post_showcase',
+            'post_slider',
+            'post_slider_popout',
+
+            // @deprecated
             'post_grid_paginated',
             'post_grid_slider',
-            'post_grid',
             'post_list_paginated',
-            'post_list_slider',
-            'post_list',
-            'post_slider'
+            'post_list_slider'
         );
         return apply_filters( 'themeblvd_portfolios_builder_items', $items );
     }
@@ -351,7 +357,7 @@ class Theme_Blvd_Portfolios {
 
             $new_selections[$key] = $value;
 
-            if( $key == 'tag' ) {
+            if ( $key == 'tag' ) {
                 $new_selections['portfolio'] = __('Portfolio', 'portfolios');
                 $new_selections['portfolio-tag'] = __('Portfolio Tag', 'portfolios');
             }
@@ -659,8 +665,8 @@ class Theme_Blvd_Portfolios {
 
     /**
      * On the frontend of the site, filter the query
-     * args for post lists and post grids to include
-     * our portfolio options.
+     * args for items that query posts, for our portfolio
+     * options.
      *
      * @since 1.0.0
      */
@@ -672,42 +678,49 @@ class Theme_Blvd_Portfolios {
             $source = $args['source'];
         }
 
-        if ( 'portfolio' == $source || 'portfolio-tag' == $source || ! $source ) {
-
-            $query['tax_query'] = array();
+        if ( $source == 'portfolio' || $source == 'portfolio-tag' || ! $source ) {
 
             // Portfolios
-            if ( 'portfolio' == $source || ( ! $source && ! empty( $args['portfolio'] ) ) ) {
+            if ( $source == 'portfolio' || ( ! $source && ! empty( $args['portfolio'] ) ) ) {
 
                 $query['post_type'] = 'portfolio_item';
 
-                $portfolios = str_replace(' ', '', $args['portfolio'] );
-                $portfolios = explode( ',', $portfolios );
+                if ( ! empty( $args['portfolio'] ) ) {
 
-                $query['tax_query'][] = array(
-                    'taxonomy'  => 'portfolio',
-                    'field'     => 'slug',
-                    'terms'     => $portfolios
-                );
+                    $portfolios = str_replace(' ', '', $args['portfolio'] );
+                    $portfolios = explode( ',', $portfolios );
+
+                    $query['tax_query'][] = array(
+                        'taxonomy'  => 'portfolio',
+                        'field'     => 'slug',
+                        'terms'     => $portfolios
+                    );
+
+                }
 
                 // Remove standard post taxomonies
                 unset( $query['categories'], $query['cat'], $query['category_name'] );
                 unset( $query['tag'] );
+
             }
 
             // Portfolio Tags
-            if ( 'portfolio-tag' == $source || ( ! $source && ! empty( $args['portfolio_tag'] ) ) ) {
+            if ( $source == 'portfolio-tag' || ( ! $source && ! empty( $args['portfolio_tag'] ) ) ) {
 
                 $query['post_type'] = 'portfolio_item';
 
-                $tags = str_replace(' ', '', $args['portfolio_tag'] );
-                $tags = explode( ',', $tags );
+                if ( ! empty( $args['portfolio_tag'] ) ) {
 
-                $query['tax_query'][] = array(
-                    'taxonomy'  => 'portfolio_tag',
-                    'field'     => 'slug',
-                    'terms'     => $tags
-                );
+                    $tags = str_replace(' ', '', $args['portfolio_tag'] );
+                    $tags = explode( ',', $tags );
+
+                    $query['tax_query'][] = array(
+                        'taxonomy'  => 'portfolio_tag',
+                        'field'     => 'slug',
+                        'terms'     => $tags
+                    );
+
+                }
 
                 // Remove standard post taxomonies
                 unset( $query['categories'], $query['cat'], $query['category_name'] );

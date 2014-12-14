@@ -71,6 +71,7 @@ add_action( 'after_setup_theme', 'my_portfolio_mods' );
 
 * List associated portfolios at the bottom of the portfolio item post (for framework 2.5+ themes).
 * Added portfolio archive options at *Appearance > Theme Options > Content > Portfolios* (for framework 2.5+ themes).
+* Fixes for Layout Builder 2.0+ integration.
 * GlotPress compatibility (for 2015 wordpress.org release).
 
 = 1.0.1 =
