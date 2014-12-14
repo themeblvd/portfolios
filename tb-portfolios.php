@@ -274,6 +274,12 @@ class Theme_Blvd_Portfolios {
                 $options['source']['options'] = $this->set_sorce( $options['source']['options'] );
             }
 
+            // Add additional filering options
+            if ( isset( $options['filter']['options'] ) ) {
+                $options['filter']['options']['portfolio'] = __('Filtered by portfolio', 'portfolios');
+                $options['filter']['options']['portfolio_tag'] = __('Filtered by portfolio tag', 'portfolios');
+            }
+
             // Set triggers on other options so they
             // appear when the user selects the source.
             $options = $this->set_triggers( $options );
