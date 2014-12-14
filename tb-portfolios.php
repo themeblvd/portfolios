@@ -224,10 +224,10 @@ class Theme_Blvd_Portfolios {
         // add_filter( 'themeblvd_locals', array( $this, 'locals' ) );
         add_action( 'themeblvd_sub_meta_items', array( $this, 'sub_meta'), 11 ); // requires framework 2.5+
         add_filter( 'themeblvd_pre_breadcrumb_parts', array( $this, 'breadcrumbs' ), 10, 2 );
+        add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
 
         // @deprecated
         if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
-            add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
             add_filter( 'themeblvd_template_parts', array( $this, 'template_parts' ) );
             add_filter( 'themeblvd_meta', array( $this, 'meta' ), 10, 6 );
         }
