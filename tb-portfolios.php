@@ -72,7 +72,9 @@ class Theme_Blvd_Portfolios {
     	add_action( 'admin_enqueue_scripts', array( $this, 'menu_icon' ) );
 
         // Theme Blvd Integration
-        add_action( 'after_setup_theme', array( $this, 'themeblvd_init' ) );
+        if ( defined('TB_FRAMEWORK_VERSION') ) {
+            add_action( 'after_setup_theme', array( $this, 'themeblvd_init' ) );
+        }
 
     }
 
