@@ -64,6 +64,9 @@ class Theme_Blvd_Portfolios {
      */
     private function __construct() {
 
+        // Localization
+        add_action( 'init', array( $this, 'textdomain' ) );
+
     	// Setup CPT & taxonomies
     	add_action( 'init', array( $this, 'register' ) );
     	add_action( 'admin_enqueue_scripts', array( $this, 'menu_icon' ) );
@@ -78,6 +81,16 @@ class Theme_Blvd_Portfolios {
     /*--------------------------------------------*/
 
     /**
+     * Plugin text domain for localization.
+     * GlotPress-ready.
+     *
+     * @since 1.1.0
+     */
+    public function textdomain() {
+        load_plugin_textdomain('portfolios');
+    }
+
+    /**
      * Register post type
      *
      * @since 1.0.0
@@ -86,17 +99,17 @@ class Theme_Blvd_Portfolios {
 
         // Add Portfolio Item custom post type
         $labels = apply_filters( 'themeblvd_portfolio_item_cpt_labels', array(
-			'name' 					=> __( 'Portfolio Items', 'themeblvd_portfolios' ),
-			'singular_name'			=> __( 'Portfolio Item', 'themeblvd_portfolios' ),
-			'add_new'				=> __( 'Add New Item', 'themeblvd_portfolios' ),
-			'add_new_item'			=> __( 'Add New Portfolio Item', 'themeblvd_portfolios' ),
-			'edit_item'				=> __( 'Edit Item', 'themeblvd_portfolios' ),
-			'new_item'				=> __( 'New Portfolio Item', 'themeblvd_portfolios' ),
-			'all_items'				=> __( 'Portfolio Items', 'themeblvd_portfolios' ),
-			'view_item'				=> __( 'View Item', 'themeblvd_portfolios' ),
-			'search_items'			=> __( 'Search Portfolio Items', 'themeblvd_portfolios' ),
-			'not_found'				=> __( 'No portfolio items found', 'themeblvd_portfolios' ),
-			'not_found_in_trash'	=> __( 'No portfolio items found in Trash', 'themeblvd_portfolios' ),
+			'name' 					=> __( 'Portfolio Items', 'portfolios' ),
+			'singular_name'			=> __( 'Portfolio Item', 'portfolios' ),
+			'add_new'				=> __( 'Add New Item', 'portfolios' ),
+			'add_new_item'			=> __( 'Add New Portfolio Item', 'portfolios' ),
+			'edit_item'				=> __( 'Edit Item', 'portfolios' ),
+			'new_item'				=> __( 'New Portfolio Item', 'portfolios' ),
+			'all_items'				=> __( 'Portfolio Items', 'portfolios' ),
+			'view_item'				=> __( 'View Item', 'portfolios' ),
+			'search_items'			=> __( 'Search Portfolio Items', 'portfolios' ),
+			'not_found'				=> __( 'No portfolio items found', 'portfolios' ),
+			'not_found_in_trash'	=> __( 'No portfolio items found in Trash', 'portfolios' ),
 			'menu_name'				=> __( 'Portfolios' )
 		));
 
@@ -121,17 +134,17 @@ class Theme_Blvd_Portfolios {
 
   		// Add "Portfolio" taxonomy (i.e. Items are grouped into portfolios)
 		$labels = apply_filters( 'themeblvd_portfolio_tax_labels', array(
-			'name'              => __( 'Portfolios', 'themeblvd_portfolios' ),
-			'singular_name'     => __( 'Portfolio', 'themeblvd_portfolios' ),
-			'search_items'      => __( 'Search Portfolios', 'themeblvd_portfolios' ),
-			'all_items'         => __( 'All Portfolios', 'themeblvd_portfolios' ),
-			'parent_item'       => __( 'Parent Portfolio', 'themeblvd_portfolios' ),
-			'parent_item_colon' => __( 'Parent Portfolio:', 'themeblvd_portfolios' ),
-			'edit_item'         => __( 'Edit Portfolio', 'themeblvd_portfolios' ),
-			'update_item'       => __( 'Update Portfolio', 'themeblvd_portfolios' ),
-			'add_new_item'      => __( 'Add New Portfolio', 'themeblvd_portfolios' ),
-			'new_item_name'     => __( 'New Portfolio Name', 'themeblvd_portfolios' ),
-			'menu_name'         => __( 'Portfolios', 'themeblvd_portfolios' )
+			'name'              => __( 'Portfolios', 'portfolios' ),
+			'singular_name'     => __( 'Portfolio', 'portfolios' ),
+			'search_items'      => __( 'Search Portfolios', 'portfolios' ),
+			'all_items'         => __( 'All Portfolios', 'portfolios' ),
+			'parent_item'       => __( 'Parent Portfolio', 'portfolios' ),
+			'parent_item_colon' => __( 'Parent Portfolio:', 'portfolios' ),
+			'edit_item'         => __( 'Edit Portfolio', 'portfolios' ),
+			'update_item'       => __( 'Update Portfolio', 'portfolios' ),
+			'add_new_item'      => __( 'Add New Portfolio', 'portfolios' ),
+			'new_item_name'     => __( 'New Portfolio Name', 'portfolios' ),
+			'menu_name'         => __( 'Portfolios', 'portfolios' )
 		));
 
 		$args = apply_filters( 'themeblvd_portfolio_tag_tax_args', array(
@@ -147,15 +160,15 @@ class Theme_Blvd_Portfolios {
 
         // Add "Portfolio Tag" taxonomy
         $labels = apply_filters( 'themeblvd_portfolio_tag_tax_labels', array(
-            'name'              => __( 'Portfolio Tags', 'themeblvd_portfolios' ),
-            'singular_name'     => __( 'Portfolio Tag', 'themeblvd_portfolios' ),
-            'search_items'      => __( 'Search Portfolio Tags', 'themeblvd_portfolios' ),
-            'all_items'         => __( 'All Portfolio Tags', 'themeblvd_portfolios' ),
-            'edit_item'         => __( 'Edit Portfolio Tag', 'themeblvd_portfolios' ),
-            'update_item'       => __( 'Update Portfolio Tag', 'themeblvd_portfolios' ),
-            'add_new_item'      => __( 'Add New Portfolio Tag', 'themeblvd_portfolios' ),
-            'new_item_name'     => __( 'New Portfolio Tag Name', 'themeblvd_portfolios' ),
-            'menu_name'         => __( 'Portfolio Tags', 'themeblvd_portfolios' )
+            'name'              => __( 'Portfolio Tags', 'portfolios' ),
+            'singular_name'     => __( 'Portfolio Tag', 'portfolios' ),
+            'search_items'      => __( 'Search Portfolio Tags', 'portfolios' ),
+            'all_items'         => __( 'All Portfolio Tags', 'portfolios' ),
+            'edit_item'         => __( 'Edit Portfolio Tag', 'portfolios' ),
+            'update_item'       => __( 'Update Portfolio Tag', 'portfolios' ),
+            'add_new_item'      => __( 'Add New Portfolio Tag', 'portfolios' ),
+            'new_item_name'     => __( 'New Portfolio Tag Name', 'portfolios' ),
+            'menu_name'         => __( 'Portfolio Tags', 'portfolios' )
         ));
 
         $args = apply_filters( 'themeblvd_portfolio_tag_tax_args', array(
@@ -219,10 +232,10 @@ class Theme_Blvd_Portfolios {
         // add_filter( 'themeblvd_locals', array( $this, 'locals' ) );
         add_action( 'themeblvd_sub_meta_items', array( $this, 'sub_meta'), 11 ); // requires framework 2.5+
         add_filter( 'themeblvd_pre_breadcrumb_parts', array( $this, 'breadcrumbs' ), 10, 2 );
-        add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
 
         // @deprecated
         if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
+            add_filter( 'the_tags', array( $this, 'tags' ), 10, 4 );
             add_filter( 'themeblvd_template_parts', array( $this, 'template_parts' ) );
             add_filter( 'themeblvd_meta', array( $this, 'meta' ), 10, 6 );
         }
@@ -339,8 +352,8 @@ class Theme_Blvd_Portfolios {
             $new_selections[$key] = $value;
 
             if( $key == 'tag' ) {
-                $new_selections['portfolio'] = __('Portfolio', 'themeblvd_portfolios');
-                $new_selections['portfolio-tag'] = __('Portfolio Tag', 'themeblvd_portfolios');
+                $new_selections['portfolio'] = __('Portfolio', 'portfolios');
+                $new_selections['portfolio-tag'] = __('Portfolio Tag', 'portfolios');
             }
 
         }
@@ -393,8 +406,8 @@ class Theme_Blvd_Portfolios {
                 // Add option to select portfolios
                 $new_options['portfolio'] = array(
                     'id'        => 'portfolio',
-                    'name'      => __( 'Portfolio', 'themeblvd_portfolios' ),
-                    'desc'      => __( 'Enter a portfolio slug, or a comma separated list of portfolio slugs, to pull posts from. Leave blank to pull all portfolio items.', 'themeblvd_portfolios' ),
+                    'name'      => __( 'Portfolio', 'portfolios' ),
+                    'desc'      => __( 'Enter a portfolio slug, or a comma separated list of portfolio slugs, to pull posts from. Leave blank to pull all portfolio items.', 'portfolios' ),
                     'type'      => 'text',
                     'class'     => 'hide receiver receiver-portfolio'
                 );
@@ -402,8 +415,8 @@ class Theme_Blvd_Portfolios {
                 // Add option to input portfolio tag
                 $new_options['portfolio_tag'] = array(
                     'id'        => 'portfolio_tag',
-                    'name'      => __( 'Portfolio Tag', 'themeblvd_portfolios' ),
-                    'desc'      => __( 'Enter a single portfolio tag, or a comma separated list of portfolio tags, to pull posts from.', 'themeblvd_portfolios' ),
+                    'name'      => __( 'Portfolio Tag', 'portfolios' ),
+                    'desc'      => __( 'Enter a single portfolio tag, or a comma separated list of portfolio tags, to pull posts from.', 'portfolios' ),
                     'type'      => 'text',
                     'class'     => 'hide receiver receiver-portfolio-tag'
                 );
@@ -464,15 +477,15 @@ class Theme_Blvd_Portfolios {
 
                 $new_options['portfolio'] = array(
                     'id'        => 'portfolio',
-                    'name'      => __( 'portfolio', 'themeblvd_pto' ),
-                    'desc'      => __( 'Portfolio slugs to include.<br>Ex: my-portfolio<br>Ex: my-portfolio-1, my-portfolio-2', 'themeblvd_pto' ),
+                    'name'      => __( 'portfolio', 'portfolios' ),
+                    'desc'      => __( 'Portfolio slugs to include.<br>Ex: my-portfolio<br>Ex: my-portfolio-1, my-portfolio-2', 'portfolios' ),
                     'type'      => 'text'
                 );
 
                 $new_options['portfolio_tag'] = array(
                     'id'        => 'portfolio_tag',
-                    'name'      => __( 'portfolio_tag', 'themeblvd_pto' ),
-                    'desc'      => __( 'Portfolio tags to include.<br>Ex: my-tag<br>Ex: my-tag-1, my-tag-2', 'themeblvd_pto' ),
+                    'name'      => __( 'portfolio_tag', 'portfolios' ),
+                    'desc'      => __( 'Portfolio tags to include.<br>Ex: my-tag<br>Ex: my-tag-1, my-tag-2', 'portfolios' ),
                     'type'      => 'text'
                 );
 
@@ -804,7 +817,7 @@ class Theme_Blvd_Portfolios {
     /**
      * Sub post meta
      *
-     * @since 1.0.1
+     * @since 1.1.0
      */
     public function sub_meta() {
 
