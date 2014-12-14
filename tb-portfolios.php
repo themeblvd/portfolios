@@ -69,7 +69,6 @@ class Theme_Blvd_Portfolios {
 
     	// Setup CPT & taxonomies
     	add_action( 'init', array( $this, 'register' ) );
-    	add_action( 'admin_enqueue_scripts', array( $this, 'menu_icon' ) );
 
         // Theme Blvd Integration
         if ( defined('TB_FRAMEWORK_VERSION') ) {
@@ -126,7 +125,7 @@ class Theme_Blvd_Portfolios {
 			'capability_type'		=> 'post',
 			'has_archive'			=> true,
 			'hierarchical'			=> false,
-			'menu_icon'				=> TB_PORTFOLIOS_PLUGIN_URI . '/assets/images/menu-icon.png',
+			'menu_icon'				=> 'dashicons-portfolio', // overridden with CSS if using Theme Blvd theme
 			'menu_position'			=> null,
 			'supports'				=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
 			'taxonomies'			=> array( 'tb_portfolio', 'tb_portfolio_tag' )
@@ -189,15 +188,6 @@ class Theme_Blvd_Portfolios {
 		register_taxonomy_for_object_type( 'portfolio', 'portfolio_item' );
 
      }
-
-    /**
-     * Add CSS file to all of WP admin for menu icon.
-     *
-     * @since 1.0.0
-     */
-    public function menu_icon() {
-        wp_enqueue_style( 'themeblvd_portfolios_icon', TB_PORTFOLIOS_PLUGIN_URI . '/assets/css/icons.css' );
-    }
 
     /*--------------------------------------------*/
     /* Initiate Theme Blvd integration
