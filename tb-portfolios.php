@@ -71,9 +71,7 @@ class Theme_Blvd_Portfolios {
     	add_action( 'init', array( $this, 'register' ) );
 
         // Theme Blvd Integration
-        if ( defined('TB_FRAMEWORK_VERSION') ) {
-            add_action( 'after_setup_theme', array( $this, 'themeblvd_init' ) );
-        }
+        add_action( 'after_setup_theme', array( $this, 'themeblvd_init' ) );
 
     }
 
@@ -199,6 +197,10 @@ class Theme_Blvd_Portfolios {
      * @since 1.0.1
      */
     public function themeblvd_init() {
+
+        if ( ! defined('TB_FRAMEWORK_VERSION') ) {
+            return;
+        }
 
         add_filter( 'themeblvd_elements', array( $this, 'builder_options' ) );
         add_filter( 'themeblvd_portfolio_module_options', array( $this, 'portfolio_module_options' ) );
