@@ -871,15 +871,17 @@ class Theme_Blvd_Portfolios {
      */
     public function meta( $output, $time, $author, $category, $comments, $sep ) {
 
-        if ( 'portfolio_item' == get_post_type() ) {
+        if ( get_post_type() == 'portfolio_item' ) {
 
-            $portfolio = get_the_term_list( get_the_id(), 'portfolio', '<span class="category"><i class="icon-reorder"></i> ', ', ', '</span>' );
-
-            if ( $portfolio ) {
-                $portfolio = $sep.$portfolio;
+            if ( $category ) {
+                $output = str_replace( $category, '', $output );
             }
 
-            $output = str_replace( $sep.$category, $portfolio, $output );
+            $portfolio = get_the_term_list( get_the_id(), 'portfolio', '<span class="category"><i class="icon-reorder fa fa-bars"></i> ', ', ', '</span>' ); // "icon-reorder" class for older themes
+
+            if ( $portfolio ) {
+                $output = str_replace( $author, $author.$sep.$portfolio, $output );
+            }
 
         }
 
