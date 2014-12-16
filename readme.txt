@@ -89,6 +89,8 @@ function my_portfolio_tax_args( $args ) {
 add_filter('themeblvd_portfolio_tax_args', 'my_portfolio_tax_args');
 `
 
+Remember to flush your re-write rules! In other words, after you make this change, go to *Settings > Permalinks* in your WP admin, and re-save the page.
+
 = And the URL slug for Portfolio Tag archives? =
 
 `
@@ -98,6 +100,8 @@ function my_portfolio_tag_tax_args( $args ) {
 }
 add_filter('themeblvd_portfolio_tag_tax_args', 'my_portfolio_tag_tax_args');
 `
+
+Remember to flush your re-write rules! In other words, after you make this change, go to *Settings > Permalinks* in your WP admin, and re-save the page.
 
 == Changelog ==
 
