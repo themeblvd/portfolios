@@ -67,6 +67,8 @@ add_action( 'after_setup_theme', 'my_portfolio_mods' );
 
 = 1.1.2 =
 
+* Fixed filters applied to registering the taxonomies.
+
 = 1.1.1 =
 
 * Fixed Theme Blvd integration hook, from last update.

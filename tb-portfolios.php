@@ -146,7 +146,7 @@ class Theme_Blvd_Portfolios {
 			'menu_name'         => __( 'Portfolios', 'portfolios' )
 		));
 
-		$args = apply_filters( 'themeblvd_portfolio_tag_tax_args', array(
+		$args = apply_filters( 'themeblvd_portfolio_tax_args', array(
 			'hierarchical'      => true,
 			'labels'            => $labels,
 			'show_ui'           => true,
