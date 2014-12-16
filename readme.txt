@@ -41,12 +41,12 @@ Yup, but it just won't do a whole lot. You'll essentially end up with a "Portfol
 function my_grid_columns() {
 	return 3; // Number of columns (1-5)
 }
-add_filter( 'themeblvd_default_grid_columns', 'my_grid_columns' );
+add_filter('themeblvd_default_grid_columns', 'my_grid_columns');
 
 function my_grid_rows() {
 	return 4; // Number of rows per page
 }
-add_filter( 'themeblvd_default_grid_rows', 'my_grid_rows' );
+add_filter('themeblvd_default_grid_rows', 'my_grid_rows');
 `
 
 = How can disable portfolio archives from displaying in a grid? =
@@ -60,7 +60,43 @@ function my_portfolio_mods() {
 	remove_filter( 'themeblvd_template_parts', array( $portfolios, 'template_parts' ) );
 
 }
-add_action( 'after_setup_theme', 'my_portfolio_mods' );
+add_action('after_setup_theme', 'my_portfolio_mods');
+`
+
+= How can I change the sidebar layout of Portfolio and Portfolio Tag archives? =
+
+`
+function my_sidebar_layout( $layout ) {
+
+	if ( is_tax('portfolio') || is_tax('portfolio_tag') ) {
+		$layout = 'full_width';
+	}
+
+	return $layout;
+}
+add_filter('themeblvd_sidebar_layout', 'my_sidebar_layout');
+`
+
+More Info: [Customizing Sidebar Layouts](http://dev.themeblvd.com/tutorial/sidebar-layouts/)
+
+= How can I change the URL slug of Portfolio archives? =
+
+`
+function my_portfolio_tax_args( $args ) {
+	$args['rewrite'] = array('slug' => 'my-slug');
+	return $args;
+}
+add_filter('themeblvd_portfolio_tax_args', 'my_portfolio_tax_args');
+`
+
+= And the URL slug for Portfolio Tag archives? =
+
+`
+function my_portfolio_tag_tax_args( $args ) {
+	$args['rewrite'] = array('slug' => 'my-other-slug');
+	return $args;
+}
+add_filter('themeblvd_portfolio_tag_tax_args', 'my_portfolio_tag_tax_args');
 `
 
 == Changelog ==
@@ -68,6 +104,7 @@ add_action( 'after_setup_theme', 'my_portfolio_mods' );
 = 1.1.2 =
 
 * Fixed filters applied to registering the taxonomies.
+* Added more code examples to [FAQ](https://wordpress.org/plugins/portfolios/faq/) on using these filters.
 
 = 1.1.1 =
 
