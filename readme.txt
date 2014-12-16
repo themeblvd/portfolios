@@ -33,7 +33,7 @@ If you're using a theme with [Theme Blvd](http://www.themeblvd.com) framework v2
 
 = Will this plugin work if I'm not using a Theme Blvd theme? =
 
-Yup, but it just won't do a whole lot. You'll essentially end up with a "Portfolio Item" custom post type and associated "Portfolio" taxonomy with a cool retina icon.
+Yup, but it just won't do a whole lot. You'll essentially end up with a "Portfolio Item" custom post type and associated "Portfolio" taxonomy.
 
 = How can change the number of columns and rows in portfolio archive grids? =
 
