@@ -67,6 +67,8 @@ add_action('after_setup_theme', 'my_portfolio_mods');
 
 = How can I change the sidebar layout of Portfolio and Portfolio Tag archives? =
 
+If you're using a theme with Theme Blvd framework 2.5+, there's a user option for this at *Appearance > Theme Options > Layout > Sidebar Layout > Portfolios*. And if not, you can use the following code.
+
 `
 function my_sidebar_layout( $layout ) {
 
@@ -106,6 +108,7 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 = 1.1.2 =
 
 * Fixed filters applied to registering the taxonomies.
+* Added option for sidebar layout on portfolio archives (for framework 2.5+ themes).
 * Added more code examples to [FAQ](https://wordpress.org/plugins/portfolios/faq/) on using these filters.
 
 = 1.1.1 =

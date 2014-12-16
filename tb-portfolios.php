@@ -221,6 +221,7 @@ class Theme_Blvd_Portfolios {
             add_filter( 'themeblvd_formatted_options', array( $this, 'theme_options' ) );
             add_filter( 'themeblvd_theme_mode_override', array( $this, 'archive_mode' ), 10, 2 );
             add_action( 'themeblvd_archive_info', array( $this, 'archive_info' ) );
+            add_filter( 'themeblvd_sidebar_layout', array( $this, 'sidebar_layout' ) );
         }
 
         // add_filter( 'themeblvd_locals', array( $this, 'locals' ) );
@@ -503,6 +504,10 @@ class Theme_Blvd_Portfolios {
 
     }
 
+    /*--------------------------------------------*/
+    /* Theme Blvd "Theme Options" Integration
+    /*--------------------------------------------*/
+
     /**
      * Adjustments to Theme Options page. Add "Portfolio"
      * section just after "Archives" section. Only applies
@@ -567,6 +572,18 @@ class Theme_Blvd_Portfolios {
                     'type' => 'section_end'
                 );
 
+            } else if ( $key == 'archive_sidebar_layout' ) {
+
+                $new_options['portfolio_sidebar_layout'] = array(
+                    'name'      => __( 'Portfolios', 'themeblvd' ),
+                    'desc'      => __( 'When viewing a portfolio or portfolio tag archive of posts, what do you want to use for the sidebar layout?', 'themeblvd' ),
+                    'id'        => 'portfolio_sidebar_layout',
+                    'std'       => 'full_width',
+                    'type'      => 'images',
+                    'options'   => $new_options[$key]['options'],
+                    'img_width' => '45'
+                );
+
             }
 
         }
@@ -607,6 +624,26 @@ class Theme_Blvd_Portfolios {
             themeblvd_tax_info();
         }
 
+    }
+
+    /**
+     * Display info box at the top of portfolio and portfolio
+     * tag archive pages, based on theme options additions.
+     *
+     * @since 1.1.2
+     */
+    public function sidebar_layout( $layout ) {
+
+        if ( is_tax('portfolio') || is_tax('portfolio_tag') ) {
+
+            $layout = themeblvd_get_option('portfolio_sidebar_layout', null, 'full_width');
+
+            if ( $layout == 'default' ) {
+                $layout = themeblvd_get_option('sidebar_layout', null, apply_filters( 'themeblvd_default_sidebar_layout', 'sidebar_right') );
+            }
+        }
+
+        return $layout;
     }
 
     /*--------------------------------------------*/
