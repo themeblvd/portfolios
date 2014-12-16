@@ -33,7 +33,7 @@ If you're using a theme with [Theme Blvd](http://www.themeblvd.com) framework v2
 
 = Will this plugin work if I'm not using a Theme Blvd theme? =
 
-Yup, but it just won't do a whole lot. You'll essentially end up with a "Portfolio Item" custom post type and associated "Portfolio" taxonomy.
+Yup, but it just won't do a whole lot. You'll essentially end up with a "Portfolio Item" custom post type and associated "Portfolio" and "Portfolio Tag" taxonomies.
 
 = How can change the number of columns and rows in portfolio archive grids? =
 
@@ -42,7 +42,9 @@ function my_grid_columns() {
 	return 3; // Number of columns (1-5)
 }
 add_filter('themeblvd_default_grid_columns', 'my_grid_columns');
+`
 
+`
 function my_grid_rows() {
 	return 4; // Number of rows per page
 }
@@ -79,7 +81,7 @@ add_filter('themeblvd_sidebar_layout', 'my_sidebar_layout');
 
 More Info: [Customizing Sidebar Layouts](http://dev.themeblvd.com/tutorial/sidebar-layouts/)
 
-= How can I change the URL slug of Portfolio archives? =
+= How can I change the URL slug of Portfolio and Portfolio Tag archives? =
 
 `
 function my_portfolio_tax_args( $args ) {
@@ -89,10 +91,6 @@ function my_portfolio_tax_args( $args ) {
 add_filter('themeblvd_portfolio_tax_args', 'my_portfolio_tax_args');
 `
 
-Remember to flush your re-write rules! In other words, after you make this change, go to *Settings > Permalinks* in your WP admin, and re-save the page.
-
-= And the URL slug for Portfolio Tag archives? =
-
 `
 function my_portfolio_tag_tax_args( $args ) {
 	$args['rewrite'] = array('slug' => 'my-other-slug');
@@ -101,7 +99,7 @@ function my_portfolio_tag_tax_args( $args ) {
 add_filter('themeblvd_portfolio_tag_tax_args', 'my_portfolio_tag_tax_args');
 `
 
-Remember to flush your re-write rules! In other words, after you make this change, go to *Settings > Permalinks* in your WP admin, and re-save the page.
+Note: Remember to flush your re-write rules! In other words, after you make this change, go to *Settings > Permalinks* in your WordPress admin, and re-save the page.
 
 == Changelog ==
 
