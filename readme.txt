@@ -107,6 +107,8 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 
 = 1.1.3 =
 
+* Changed default value for "Portfolio Info Boxes" option.
+
 = 1.1.2 =
 
 * Fixed filters applied to registering the taxonomies.

@@ -548,7 +548,7 @@ class Theme_Blvd_Portfolios {
                     'name'      => __('Portfolio Info Boxes', 'portfolios'),
                     'desc'      => __('When viewing a portfolio archive, would you like to show an info box at the top that contains the title and description of the current portfolio?', 'portfolios'),
                     'id'        => 'portfolio_info',
-                    'std'       => 'hide',
+                    'std'       => 'show',
                     'type'      => 'select',
                     'options'   => array(
                         'show' => __('Yes, show info boxes', 'portfolios'),
