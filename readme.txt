@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: bundle, Theme Blvd, themeblvd, Jason Bobich, portfolios
-Stable Tag: 1.1.2
+Stable Tag: 1.1.3
 
 Adds a "Portfolio Item" custom post type with associated "Portfolio" and "Porfolio Tag" taxonomies.
 
@@ -104,6 +104,8 @@ add_filter('themeblvd_portfolio_tag_tax_args', 'my_portfolio_tag_tax_args');
 Note: Remember to flush your re-write rules! In other words, after you make this change, go to *Settings > Permalinks* in your WordPress admin, and re-save the page.
 
 == Changelog ==
+
+= 1.1.3 =
 
 = 1.1.2 =
 
