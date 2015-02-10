@@ -108,6 +108,7 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 = 1.1.3 =
 
 * Changed default value for "Portfolio Info Boxes" option.
+* Added Banner functionality to portfolio items (for framework 2.5+ themes).
 
 = 1.1.2 =
 

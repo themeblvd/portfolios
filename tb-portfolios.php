@@ -214,6 +214,7 @@ class Theme_Blvd_Portfolios {
         add_filter( 'themeblvd_template_grid_query', array( $this, 'page_template_query' ), 10, 3 );
 
         add_filter( 'themeblvd_post_meta', array( $this, 'post_meta' ) );
+        add_filter( 'themeblvd_banner_meta', array( $this, 'post_meta' ) ); // only in framework 2.5+
         add_filter( 'themeblvd_meta_options_tb_post_options', array( $this, 'post_meta_options' ) );
         add_filter( 'themeblvd_pto_options', array( $this, 'pto_options' ) );
 
