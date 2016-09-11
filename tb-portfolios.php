@@ -532,7 +532,7 @@ class Theme_Blvd_Portfolios {
 
                 $new_options['portfolio_mode'] = array(
                     'name'      => __('Post Display', 'portfolios'),
-                    'desc'      => __('When viewing a portfolio or portfolio tag archive, how do you want the posts displayed?', 'portfolios'),
+                    'desc'      => __('When viewing a portfolio item, portfolio, or portfolio tag archive, how do you want the posts displayed?', 'portfolios'),
                     'id'        => 'portfolio_mode',
                     'std'       => 'showcase',
                     'type'      => 'select',
@@ -599,12 +599,12 @@ class Theme_Blvd_Portfolios {
      */
     public function archive_mode( $mode, $q ) {
 
-        if ( $q->is_tax('portfolio') || $q->is_tax('portfolio_tag') ) {
+        if ( $q->is_post_type_archive('portfolio_item') || $q->is_tax('portfolio') || $q->is_tax('portfolio_tag') ) {
 
             $mode = themeblvd_get_option('portfolio_mode', null, 'showcase');
 
             if ( ! $mode || $mode == 'default' ) {
-                $mode = themeblvd_get_option( 'archive_mode', null, 'blog' );
+                $mode = themeblvd_get_option('archive_mode', null, 'blog');
             }
 
         }

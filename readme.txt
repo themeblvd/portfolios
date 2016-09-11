@@ -107,6 +107,8 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 
 = 1.1.4 - XX/XX/XXXX =
 
+* Improvement: Apply archive post display option to portfolio item archives, opposed to just portfolio and portfolio tag taxonomy archives.
+
 = 1.1.3 - 02/10/2015 =
 
 * Changed default value for "Portfolio Info Boxes" option.
