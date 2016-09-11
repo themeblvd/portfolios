@@ -105,7 +105,7 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 
 == Changelog ==
 
-= 1.1.4 - XX/XX/XXXX =
+= 1.1.4 - 09/11/2016 =
 
 * Improvement: Apply archive post display option to portfolio item archives, opposed to just portfolio and portfolio tag taxonomy archives.
 
