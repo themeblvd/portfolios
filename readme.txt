@@ -107,6 +107,7 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 == Changelog ==
 
 = 1.1.5 - 09/07/2018 =
+* Allow portfolio items to be available through REST API and editable with Gutenberg.
 
 = 1.1.4 - 09/11/2016 =
 * Apply archive post display option to portfolio item archives, opposed to just portfolio and portfolio tag taxonomy archives.

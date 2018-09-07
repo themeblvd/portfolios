@@ -126,7 +126,8 @@ class Theme_Blvd_Portfolios {
 			'menu_icon'				=> 'dashicons-portfolio', // overridden with CSS if using Theme Blvd theme
 			'menu_position'			=> null,
 			'supports'				=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
-			'taxonomies'			=> array( 'portfolio', 'portfolio_tag' )
+			'taxonomies'			=> array( 'portfolio', 'portfolio_tag' ),
+			'show_in_rest'          => true,
 		));
 
   		register_post_type( 'portfolio_item', $args );
