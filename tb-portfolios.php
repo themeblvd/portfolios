@@ -2,7 +2,7 @@
 /*
 Plugin Name: Portfolios
 Description: Extend the Post Grid system in your Theme Blvd theme to a Portfolio custom post type.
-Version: 1.1.4
+Version: 1.1.5
 Author: Theme Blvd
 Author URI: http://themeblvd.com
 License: GPL2
@@ -25,7 +25,7 @@ License: GPL2
 
 */
 
-define( 'TB_PORTFOLIOS_PLUGIN_VERSION', '1.1.4' );
+define( 'TB_PORTFOLIOS_PLUGIN_VERSION', '1.1.5' );
 define( 'TB_PORTFOLIOS_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'TB_PORTFOLIOS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 define( 'TB_PORTFOLIOS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

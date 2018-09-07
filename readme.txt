@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: bundle, Theme Blvd, themeblvd, Jason Bobich, portfolios
-Stable Tag: 1.1.4
+Stable Tag: 1.1.5
 Tested up to: 4.9
 
 Adds a "Portfolio Item" custom post type with associated "Portfolio" and "Porfolio Tag" taxonomies.
@@ -106,28 +106,25 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 
 == Changelog ==
 
-= 1.1.4 - 09/11/2016 =
+= 1.1.5 - 09/07/2018 =
 
-* Improvement: Apply archive post display option to portfolio item archives, opposed to just portfolio and portfolio tag taxonomy archives.
+= 1.1.4 - 09/11/2016 =
+* Apply archive post display option to portfolio item archives, opposed to just portfolio and portfolio tag taxonomy archives.
 
 = 1.1.3 - 02/10/2015 =
-
 * Changed default value for "Portfolio Info Boxes" option.
 * Added Banner functionality to portfolio items (for framework 2.5+ themes).
 
 = 1.1.2 - 12/16/2014 =
-
 * Fixed filters applied to registering the taxonomies.
 * Added option for sidebar layout on portfolio archives (for framework 2.5+ themes).
 * Added more code examples to [FAQ](https://wordpress.org/plugins/portfolios/faq/) on using these filters.
 
 = 1.1.1 - 12/15/2014 =
-
 * Fixed Theme Blvd integration hook, from last update.
 * Fixed post meta integration (for framework 2.4 themes).
 
 = 1.1.0 - 12/13/2014 =
-
 * List associated portfolios at the bottom of the portfolio item post (for framework 2.5+ themes).
 * Added portfolio archive options at *Appearance > Theme Options > Content > Portfolios* (for framework 2.5+ themes).
 * Fixes for Layout Builder 2.0+ integration.
@@ -135,9 +132,7 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 * GlotPress compatibility (for 2015 wordpress.org release).
 
 = 1.0.1 - 07/21/2014 =
-
 * Fixed PHP warning on Portfolio Items breadcrumb trail when no portfolio is selected.
 
 = 1.0.0 - 08/01/2013 =
-
 * This is the first release.
