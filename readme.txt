@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: bundle, Theme Blvd, themeblvd, Jason Bobich, portfolios
-Stable Tag: 1.1.5
+Stable Tag: 1.1.6
 Tested up to: 4.9
 
 Adds a "Portfolio Item" custom post type with associated "Portfolio" and "Porfolio Tag" taxonomies.
@@ -105,6 +105,8 @@ add_filter('themeblvd_portfolio_tag_tax_args', 'my_portfolio_tag_tax_args');
 Note: Remember to flush your re-write rules! In other words, after you make this change, go to *Settings > Permalinks* in your WordPress admin, and re-save the page.
 
 == Changelog ==
+
+= 1.1.6 - 01/20/2019 =
 
 = 1.1.5 - 09/07/2018 =
 * Allow portfolio items to be available through REST API and editable with Gutenberg.
