@@ -137,6 +137,7 @@ class Theme_Blvd_Portfolios {
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => array( 'slug' => 'items' ),
+			'show_in_rest'      => true,
 		));
 
 		register_taxonomy( 'portfolio', array( 'portfolio_item' ), $args );
@@ -161,6 +162,7 @@ class Theme_Blvd_Portfolios {
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => array( 'slug' => 'item-tag' ),
+			'show_in_rest'      => true,
 		));
 
 		register_taxonomy( 'portfolio_tag', array( 'portfolio_item' ), $args );

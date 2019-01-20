@@ -107,6 +107,7 @@ Note: Remember to flush your re-write rules! In other words, after you make this
 == Changelog ==
 
 = 1.1.6 - 01/20/2019 =
+* Allow portfolio taxonomies to be available through REST API and applied with Gutenberg.
 
 = 1.1.5 - 09/07/2018 =
 * Allow portfolio items to be available through REST API and editable with Gutenberg.
