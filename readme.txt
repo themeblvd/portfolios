@@ -3,7 +3,7 @@ Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: bundle, Theme Blvd, themeblvd, Jason Bobich, portfolios
 Stable Tag: 1.1.6
-Tested up to: 4.9
+Tested up to: 5.0
 
 Adds a "Portfolio Item" custom post type with associated "Portfolio" and "Porfolio Tag" taxonomies.
 
